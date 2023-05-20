@@ -81,7 +81,7 @@ El primer query, pero en Neo4j.
 # Query 1
 </code>
 </pre>
-<button onclick="copyCodeSnippet()">Copy</button>
+<button onclick="copyCodeSnippet()"></button>
 
 El segundo query en Neo4j.
 
@@ -90,7 +90,7 @@ El segundo query en Neo4j.
 # Query 2
 </code>
 </pre>
-<button onclick="copyCodeSnippet()">Copy</button>
+<button onclick="copyCodeSnippet()"></button>
 
 El tercer query pero en Neo4j.
 
@@ -99,6 +99,6 @@ El tercer query pero en Neo4j.
 # Query 3
 </code>
 </pre>
-<button onclick="copyCodeSnippet()">Copy</button>
+
 
 
