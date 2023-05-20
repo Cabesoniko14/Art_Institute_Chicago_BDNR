@@ -1,5 +1,10 @@
 # Trabajo final de BD_NR
 
+Integrantes del equipo:
+  - Isaac Pimentel
+  - Alejandra Arredondo
+  - Javier Nieto
+
 ## Índice
 
 - [El proyecto](#El-proyecto)
