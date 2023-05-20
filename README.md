@@ -1,6 +1,6 @@
 # Trabajo final de BD_NR
 
-![Art Institute of Chicago](imgs/AIC.png){:height="30px" width="50px"}
+<img src="imgs/AIC.png" alt="Art Institute of Chicago" style="width:50px; height:30px;">
 
 
 Integrantes del equipo:
