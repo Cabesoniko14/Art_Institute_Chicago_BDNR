@@ -47,12 +47,7 @@ Compartimos por aquí los tres queries que diseñamos para la base de datos (tan
 
 El primer query trata de ____.
 
-<pre>
-<code id="codeSnippet">
-# Query 1
-</code>
-</pre>
-<button onclick="copyCodeSnippet()">Copy</button>
+<pre> <code id="codeSnippet"> # Query 1 </code></pre>
 
 El segundo query trata de ____.
 
@@ -61,7 +56,6 @@ El segundo query trata de ____.
 # Query 2
 </code>
 </pre>
-<button onclick="copyCodeSnippet()">Copy</button>
 
 El tercer query trata de ____.
 
@@ -70,7 +64,6 @@ El tercer query trata de ____.
 # Query 3
 </code>
 </pre>
-<button onclick="copyCodeSnippet()">Copy</button>
 
 ### Neo4j
 
@@ -81,7 +74,6 @@ El primer query, pero en Neo4j.
 # Query 1
 </code>
 </pre>
-<button onclick="copyCodeSnippet()"></button>
 
 El segundo query en Neo4j.
 
@@ -90,7 +82,6 @@ El segundo query en Neo4j.
 # Query 2
 </code>
 </pre>
-<button onclick="copyCodeSnippet()"></button>
 
 El tercer query pero en Neo4j.
 
@@ -99,6 +90,5 @@ El tercer query pero en Neo4j.
 # Query 3
 </code>
 </pre>
-
 
 
