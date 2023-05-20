@@ -1,5 +1,8 @@
 # Trabajo final de BD_NR
 
+![Art Institute of Chicago](imgs/AIC.png){:height="300px" width="500px"}
+
+
 Integrantes del equipo:
   - Isaac Pimentel
   - Alejandra Arredondo
