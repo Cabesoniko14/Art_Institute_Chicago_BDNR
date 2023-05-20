@@ -43,12 +43,62 @@ Explicar cómo se pasaron los datos de la base de datos de MongoDB a Neo4j.
 
 Compartimos por aquí los tres queries que diseñamos para la base de datos (tanto en MongoDB como en Neo4j).
 
+### MongoDB
+
+El primer query trata de ____.
+
 <pre>
 <code id="codeSnippet">
-// Your code snippet here
-const greeting = 'Hello, world!';
-console.log(greeting);
+# Query 1
 </code>
 </pre>
+<button onclick="copyCodeSnippet()">Copy</button>
 
-<button onclick="copyCodeSnippet()">Copy</button
+El segundo query trata de ____.
+
+<pre>
+<code id="codeSnippet">
+# Query 2
+</code>
+</pre>
+<button onclick="copyCodeSnippet()">Copy</button>
+
+El tercer query trata de ____.
+
+<pre>
+<code id="codeSnippet">
+# Query 3
+</code>
+</pre>
+<button onclick="copyCodeSnippet()">Copy</button>
+
+### Neo4j
+
+El primer query, pero en Neo4j.
+
+<pre>
+<code id="codeSnippet">
+# Query 1
+</code>
+</pre>
+<button onclick="copyCodeSnippet()">Copy</button>
+
+El segundo query en Neo4j.
+
+<pre>
+<code id="codeSnippet">
+# Query 2
+</code>
+</pre>
+<button onclick="copyCodeSnippet()">Copy</button>
+
+El tercer query pero en Neo4j.
+
+<pre>
+<code id="codeSnippet">
+# Query 3
+</code>
+</pre>
+<button onclick="copyCodeSnippet()">Copy</button>
+
+
