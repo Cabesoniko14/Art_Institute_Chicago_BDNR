@@ -51,44 +51,22 @@ El primer query trata de ____.
 
 El segundo query trata de ____.
 
-<pre>
-<code id="codeSnippet">
-# Query 2
-</code>
-</pre>
+<pre> <code id="codeSnippet"> # Query 2 </code></pre>
 
 El tercer query trata de ____.
 
-<pre>
-<code id="codeSnippet">
-# Query 3
-</code>
-</pre>
+<pre> <code id="codeSnippet"> # Query 3 </code></pre>
 
 ### Neo4j
 
 El primer query, pero en Neo4j.
 
-<pre>
-<code id="codeSnippet">
-# Query 1
-</code>
-</pre>
+<pre> <code id="codeSnippet"> # Query 1 </code></pre>
 
 El segundo query en Neo4j.
 
-<pre>
-<code id="codeSnippet">
-# Query 2
-</code>
-</pre>
+<pre> <code id="codeSnippet"> # Query 2 </code></pre>
 
 El tercer query pero en Neo4j.
 
-<pre>
-<code id="codeSnippet">
-# Query 3
-</code>
-</pre>
-
-
+<pre> <code id="codeSnippet"> # Query 3 </code></pre>
