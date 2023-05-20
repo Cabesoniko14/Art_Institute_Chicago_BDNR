@@ -9,6 +9,8 @@
   - [AWS](#AWS)
   - [MongoDB-Neo4j](#MongoDB-Neo4j)
 - [Queries](#Queries)
+  - [MongoDB](#MongoDB)
+  - [Neo4j](#Neo4j)
 
 
 ## El proyecto
