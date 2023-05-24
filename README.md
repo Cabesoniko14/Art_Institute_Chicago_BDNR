@@ -232,7 +232,7 @@ A continuación, explicamos un poco cómo está hecho nuestro proyecto final. To
 
 Se piden inputs al principio para poder ejecutar el resto del código sin tener que llenar manualmente los datos. En el mismo notebook de Jupyter se genera una pequeña interfaz que pide información. Que se ve como la siguiente.
 
-<img src="imgs/inputs.png" alt="Inputs" style="width:500px; height:180px;">
+<img src="imgs/inputs.png" alt="Inputs" style="width:600px; height:180px;">
 
 ### API-MongoDB
 
