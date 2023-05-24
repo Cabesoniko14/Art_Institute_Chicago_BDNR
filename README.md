@@ -11,6 +11,11 @@ Integrantes del equipo:
 ## Índice
 
 - [El proyecto](#El-proyecto)
+- [Instructivo](#Instructivo)
+- [Resultados](#Resultados)
+  -  [Base en MongoDB](#Base-en-MongoDB) 
+  -  [Base en Neo4j](#Base-en-Neo4j) 
+- [Video](#Video)
 - [Programa](#Programa)
   - [API-MongoDB](#API-MongoDB)
   - [MongoDB-Neo4j](#MongoDB-Neo4j)
@@ -37,11 +42,7 @@ Para correr el programa, se deben seguir los siguientes sencillos pasos:
   - contraseña de Neo4j
 3. Ejecutar todas las demás celdas.
 
-El resultado:
- - una base de datos de JSONS de obras de arte en MongoDB
- - queries avanzados para dicha base
- - una base de grafos en Neo4j de obras de arte, relacionadas con estilos, artistas y lugares de creación.
-
+## Resultados
 
 ### Base en MongoDB
 
@@ -207,23 +208,104 @@ Así se ve un JSON de la base de datos de MongoDB:
     timestamp: '2023-05-20T13:44:35-05:00'
   }</code></pre>
 
+### Base en Neo4j
 
+El resultado de la base de Neo4j nos regresa un conjunto de 4 tipos de nodos, relacionados entre sí como en el esquema a continuación.
+
+INSERTAR IMAGEN.
+
+Al buscar todos los nodos y todas sus relaciones, nuestra base de grafos se ve así (justo por eso elegimos esta base, se ve muy bien).
+
+INSERTAR GIF/VIDEO
+
+## Video
+
+En caso de que no quieras descargar todo el repositorio y correrlo por tu cuenta, o simplemente no tengas instancias de AWS ni Docker pero quieras ver el resultado, te dejamos un video de cómo corre el programa :D.
+
+ANEXAR VIDEO
 
 ## Programa
 
-A continuación, explicamos un poco cómo está hecho nuestro proyecto final.
+A continuación, explicamos un poco cómo está hecho nuestro proyecto final. Todo se encuentra en la carpeta de <code></code>.
+
+### Inputs
+
+Se piden inputs al principio para poder ejecutar el resto del código sin tener que llenar manualmente los datos. En el mismo notebook de Jupyter se genera una pequeña interfaz que pide información. Que se ve como la siguiente.
+
+IMAGEN DE LA INTERFAZ.
 
 ### API-MongoDB
 
-Explicar la conexión de la API a MongoDB
+La primera parte, consta de una conexión de la API del Art Institute of Chicago a MongoDB para crear una base de datos con JSONS. La limitante aquí fue que solo deja descargar hasta 100 obras. Lo bueno, es que esto hizo a nuestra base de datos de grafos muy bonita visualmente.
 
-### AWS
+Para lograr la conexión, se usaron las librerías <code>pymongo</code> y <code>requests.</code>.
 
-Explicar la conexión a AWS.
+Finalmente, se descargan los datos de la API y se guardan en un arreglo de JSONS, insertándolo en la colección y base de datos con sus respectivos nombres introducidos en la interfaz de inputs.
 
 ### MongoDB-Neo4j
 
-Explicar cómo se pasaron los datos de la base de datos de MongoDB a Neo4j.
+Para esta parte, se usó la librería de <code>neo4j</code>, importando de ahí <code>GraphDatabase</code> para poder establecer la conexión a Neo4j. De nuevo, se usan los valores dados en los inputs inicialmente para no tener que rellenar manualmente el usuario y contraseña de Neo4j.
+
+Luego de esto, se recuperaron mediante los siguientes queries de MongoDB la información necesaria para crear cuatro entidades: Obra, Estilo, Lugar, Artista.
+
+#### Obra
+<pre> <code id="codeSnippet"> my_collection.aggregate([{ "$project": {
+      "nombre": "$title",
+      "id": "$id",
+      "lugar_origen": "$place_of_origin",
+      "artista": "$artist_title",
+      "estilo": "$style_title",
+      "tipo": "$medium_display",
+      "_id": 0
+    }
+  }
+]) </code></pre>
+
+#### Estilo
+<pre> <code id="codeSnippet"> my_collection.aggregate([
+  {"$group": {"_id": "$style_title"}},
+  {"$project":{"_id":0, "estilo":"$_id"}},
+  {"$sort":{"estilo":1}}
+]
+) </code></pre>
+
+#### Artista
+<pre> <code id="codeSnippet"> my_collection.aggregate([
+    {"$group": {"_id": "$artist_title"}},
+    {"$project": {"_id": 0, "artista": "$_id"}},
+    {"$sort": {"artista": 1}}
+]) </code></pre>
+
+#### Lugar
+<pre> <code id="codeSnippet"> my_collection.aggregate([
+  {"$group": {"_id": "$place_of_origin"}},
+  {"$project":{"_id":0, "lugar":"$_id"}},
+  {"$sort":{"lugar":1}}
+]) </code></pre>
+
+Luego, usando esta información, se crearon los respectivos nodos de la siguiente forma.
+
+<pre> <code id="codeSnippet"> my_collection.aggregate([
+  {"$group": {"_id": "$place_of_origin"}},
+  {"$project":{"_id":0, "lugar":"$_id"}},
+  {"$sort":{"lugar":1}}
+]) </code></pre>
+
+Teniendo ya los nodos, se crearon conexiones entre los nodos de la siguiente forma.
+
+<pre> <code id="codeSnippet"> my_collection.aggregate([
+  {"$group": {"_id": "$place_of_origin"}},
+  {"$project":{"_id":0, "lugar":"$_id"}},
+  {"$sort":{"lugar":1}}
+]) </code></pre>
+
+Por último, se eliminaron los atributos no necesarios para la base, o que harían redundante la estructura.
+
+<pre> <code id="codeSnippet"> my_collection.aggregate([
+  {"$group": {"_id": "$place_of_origin"}},
+  {"$project":{"_id":0, "lugar":"$_id"}},
+  {"$sort":{"lugar":1}}
+]) </code></pre>
 
 ## Queries
 
