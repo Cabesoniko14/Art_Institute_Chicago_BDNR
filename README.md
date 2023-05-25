@@ -299,6 +299,10 @@ Teniendo ya los nodos, se crearon conexiones entre los nodos de la siguiente for
   {"$sort":{"lugar":1}}
 ]) </code></pre>
 
+En un esquema, se vería de la siguiente forma:
+
+<img src="imgs/esquema.png" alt="Esquema" style="width:680px; height:200px;">
+
 Por último, se eliminaron los atributos no necesarios para la base, o que harían redundante la estructura.
 
 <pre> <code id="codeSnippet"> my_collection.aggregate([
