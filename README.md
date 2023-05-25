@@ -217,11 +217,11 @@ El resultado de la base de Neo4j nos regresa un conjunto de 4 tipos de nodos, re
 
 Al buscar todos los nodos y todas sus relaciones, nuestra base de grafos se ve así (justo por eso elegimos esta base, se ve muy bien).
 
-<img src="imgs/result1.png" alt="Res1" style="width:400px; height:400px;">
+<img src="imgs/result1.png" alt="Res1" style="width:600px; height:400px;">
 
 Enfocándonos en un nodo en específico:
 
-<img src="imgs/resultado2.png" alt="Res2" style="width:400px; height:400px;">
+<img src="imgs/resultado2.png" alt="Res2" style="width:600px; height:400px;">
 
 ## Video
 
@@ -288,29 +288,183 @@ Luego de esto, se recuperaron mediante los siguientes queries de MongoDB la info
   {"$sort":{"lugar":1}}
 ]) </code></pre>
 
-Luego, usando esta información, se crearon los respectivos nodos de la siguiente forma.
+Luego, se creó una clase de Python para poder hacer la creación de entidades y de relaciones, y las consultas, mucho más sencillas.
 
-<pre> <code id="codeSnippet"> my_collection.aggregate([
-  {"$group": {"_id": "$place_of_origin"}},
-  {"$project":{"_id":0, "lugar":"$_id"}},
-  {"$sort":{"lugar":1}}
-]) </code></pre>
+<pre> <code id="codeSnippet"># Conectarse a Neo4j
+class GrafoPinturas:
 
-Teniendo ya los nodos, se crearon conexiones entre los nodos de la siguiente forma.
+    def __init__(self, uri, user, password):
+        self.driver = GraphDatabase.driver(uri, auth=(user, password))
 
-<pre> <code id="codeSnippet"> my_collection.aggregate([
-  {"$group": {"_id": "$place_of_origin"}},
-  {"$project":{"_id":0, "lugar":"$_id"}},
-  {"$sort":{"lugar":1}}
-]) </code></pre>
+    def close(self):
+        self.driver.close()
 
-Por último, se eliminaron los atributos no necesarios para la base, o que harían redundante la estructura.
+    def crea_pintura(self, ID, nombre, lugar, artista, estilo, tipo):
+        try:
+            consulta = """
+            CREATE (n:Pintura {id:$ID,
+                               nombre:$nombre, 
+                               lugar:$lugar,
+                               artista:$artista,
+                               estilo:$estilo,
+                               tipo:$tipo})
+            """
+            summary = self.driver.execute_query(
+                consulta,
+                ID=ID,
+                nombre=nombre,
+                lugar=lugar,
+                artista=artista,
+                estilo=estilo,
+                tipo=tipo,
+                database_='neo4j' 
+            ).summary
 
-<pre> <code id="codeSnippet"> my_collection.aggregate([
-  {"$group": {"_id": "$place_of_origin"}},
-  {"$project":{"_id":0, "lugar":"$_id"}},
-  {"$sort":{"lugar":1}}
-]) </code></pre>
+            #Imprimimos el resumen para asegurar que se cree correctamente
+            print("Created {nodes_created} nodes in {time} ms.".format(
+                nodes_created=summary.counters.nodes_created,
+                time=summary.result_available_after
+            ))
+        except Exception as e:
+            print("An exception occurred")
+        
+        
+    def crea_artista(self, ID, nombre):
+        try:
+            consulta = """
+            CREATE (n:Artista {id:$ID,
+                               nombre:$nombre})
+            """
+            summary = self.driver.execute_query(
+                consulta,
+                ID=ID,
+                nombre=nombre,
+                database_='neo4j'  
+            ).summary
+
+            #Imprimimos el resumen para asegurar que se cree correctamente
+            print("Created {nodes_created} nodes in {time} ms.".format(
+                nodes_created=summary.counters.nodes_created,
+                time=summary.result_available_after
+            ))
+        except Exception as e:
+            print("An exception occurred")
+     
+    
+    def crea_estilo(self, ID, nombre):
+        try:
+            consulta = """
+            CREATE (n:Estilo {id:$ID,
+                               nombre:$nombre})
+            """
+            summary = self.driver.execute_query(
+                consulta,
+                ID=ID,
+                nombre=nombre,
+                database_='neo4j'  
+            ).summary
+
+            #Imprimimos el resumen para asegurar que se cree correctamente
+            print("Created {nodes_created} nodes in {time} ms.".format(
+                nodes_created=summary.counters.nodes_created,
+                time=summary.result_available_after
+            ))
+        except Exception as e:
+            print("An exception occurred")
+            print(e)
+            
+
+    def crea_lugar(self, ID, nombre):
+        try:
+            consulta = """
+            CREATE (n:Pais {id:$ID,
+                               nombre:$nombre})
+            """
+            summary = self.driver.execute_query(
+                consulta,
+                ID=ID,
+                nombre=nombre,
+                database_='neo4j'  
+            ).summary
+
+            #Imprimimos el resumen para asegurar que se cree correctamente
+            print("Created {nodes_created} nodes in {time} ms.".format(
+                nodes_created=summary.counters.nodes_created,
+                time=summary.result_available_after
+            ))
+        except Exception as e:
+            print("An exception occurred")
+            
+            
+    def relacion(self, consulta):
+        try:
+            records, summary, keys = self.driver.execute_query(consulta,database_='neo4j')
+            print(f"Query counters: {summary.counters}.")
+        except:
+            print("An exception occurred")
+            
+            
+    def consulta(self, consulta):
+        records, summary, keys = self.driver.execute_query(
+            consulta,
+            database_="neo4j",
+        )
+        return records, summary, keys
+</code></pre>
+
+Con esta clase, creamos los nodos.
+
+<pre> <code id="codeSnippet">for pintura in obras:
+    conexion_grafo_pinturas.crea_pintura(
+        ID=pintura['id'], 
+        nombre=pintura['nombre'], 
+        lugar=pintura['lugar_origen'], 
+        artista=pintura['artista'], 
+        estilo=pintura['estilo'], 
+        tipo=pintura['tipo']
+    )
+    
+for contador, artista in enumerate(artistas):
+    conexion_grafo_pinturas.crea_artista(
+        ID=contador,
+        nombre =artista['artista']
+    )
+    
+    
+for contador, estilo in enumerate(estilos):
+    conexion_grafo_pinturas.crea_estilo(
+        ID=contador,
+        nombre =estilo['estilo']
+    )
+    
+for contador, lugar in enumerate(lugares):
+    conexion_grafo_pinturas.crea_lugar(
+        ID=contador,
+        nombre =lugar['lugar']
+    ) </code></pre>
+    
+   
+
+Finalmente, creaomos las relaciones.
+
+<pre> <code id="codeSnippet">relacion1 = """
+MATCH (p:Pintura),(a:Artista)
+WHERE p.artista = a.nombre
+CREATE (p)-[:PINTADA_POR]->(a);
+"""
+relacion2 = """
+MATCH (p:Pintura),(c:Pais)
+WHERE p.lugar = c.nombre
+CREATE (p)-[:ES_DE]->(c);
+"""
+relacion3 = """
+MATCH (p:Pintura),(e:Estilo)
+WHERE p.estilo = e.nombre
+CREATE (p)-[:TIENE]->(e);
+"""
+conexion_grafo_pinturas.relacion(relacion1)
+conexion_grafo_pinturas.relacion(relacion2)
+conexion_grafo_pinturas.relacion(relacion3)</code></pre>
 
 ## Queries
 
