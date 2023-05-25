@@ -227,7 +227,7 @@ Enfocándonos en un nodo en específico:
 
 En caso de que no quieras descargar todo el repositorio y correrlo por tu cuenta, o simplemente no tengas instancias de AWS ni Docker pero quieras ver el resultado, te dejamos un video de cómo corre el programa :D.
 
-ANEXAR VIDEO
+Link: https://youtu.be/6bMdRBhbjS0
 
 ## Programa
 
