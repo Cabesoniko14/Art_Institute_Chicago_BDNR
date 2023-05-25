@@ -445,7 +445,7 @@ for contador, lugar in enumerate(lugares):
     
    
 
-Finalmente, creaomos las relaciones.
+Finalmente, creamos las relaciones.
 
 <pre> <code id="codeSnippet">relacion1 = """
 MATCH (p:Pintura),(a:Artista)
