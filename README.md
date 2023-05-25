@@ -320,7 +320,6 @@ Compartimos por aquí los tres queries que diseñamos para la base de datos (tan
 El primer query nos regresa los artistas que tienen más estilos.
 
 <pre> <code id="codeSnippet"> 
-# Query 1 
 pipeline1 = [
     {
         '$group': {
@@ -354,7 +353,6 @@ result1 = my_collection.aggregate(pipeline1)
 El segundo query enlista todos los años de publicación de una obra agrupandolo por artista.
 
 <pre> <code id="codeSnippet"> 
-# Query 2 
 pipeline2 = [
     {"$group": {"_id": "$artist_title", "fechas_display": {"$push": "$date_display"}}},
     {"$project": {"_id": 0, "artista": "$_id", "fechas_display": 1}},
@@ -367,7 +365,6 @@ result2 = my_collection.aggregate(pipeline2)
 El tercer ordena de menor a mayor, el promedio del ancho de las pinturas de cada artista.
 
 <pre> <code id="codeSnippet"> 
-# Query 3 
 pipeline3 = [
     {
         '$group': {
