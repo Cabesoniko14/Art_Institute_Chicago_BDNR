@@ -317,9 +317,40 @@ Compartimos por aquí los tres queries que diseñamos para la base de datos (tan
 
 ### MongoDB
 
-El primer query trata de ____.
+El primer query nos regresa los artistas que tienen más estilos.
 
-<pre> <code id="codeSnippet"> # Query 1 </code></pre>
+<pre> <code id="codeSnippet"> # Query 1 
+pipeline1 = [
+    {
+        '$group': {
+            '_id': {
+                'artist': '$artist_title'
+            },
+            'conteo_estilos': {
+                '$addToSet': '$style_title'
+            }
+        }
+    },
+    {
+        '$project': {
+            '_id': 0,
+            'artista': '$_id.artist',
+            'conteo_estilos': { '$size': '$conteo_estilos' }
+        }
+    },
+    {
+        '$sort': {
+            'conteo_estilos': -1,
+        }
+    },{
+        '$limit': 5
+    }
+]
+
+# Query
+
+result1 = my_collection.aggregate(pipeline1)
+</code></pre>
 
 El segundo query trata de ____.
 
