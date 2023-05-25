@@ -40,6 +40,7 @@ Para correr el programa, se deben seguir los siguientes sencillos pasos:
   - nombre de la colección para mongo
   - usuario de Neo4j
   - contraseña de Neo4j
+  - IP (escribir la de AWS, o 'localhost' si se quiere hacer local)
 3. Ejecutar todas las demás celdas.
 
 ## Resultados
@@ -212,11 +213,15 @@ Así se ve un JSON de la base de datos de MongoDB:
 
 El resultado de la base de Neo4j nos regresa un conjunto de 4 tipos de nodos, relacionados entre sí como en el esquema a continuación.
 
-INSERTAR IMAGEN.
+<img src="imgs/esquema_grafo.png" alt="Esquema" style="width:680px; height:200px;">
 
 Al buscar todos los nodos y todas sus relaciones, nuestra base de grafos se ve así (justo por eso elegimos esta base, se ve muy bien).
 
-INSERTAR GIF/VIDEO
+<img src="imgs/result1.png" alt="Res1" style="width:400px; height:400px;">
+
+Enfocándonos en un nodo en específico:
+
+<img src="imgs/resultado2.png" alt="Res2" style="width:400px; height:400px;">
 
 ## Video
 
@@ -298,10 +303,6 @@ Teniendo ya los nodos, se crearon conexiones entre los nodos de la siguiente for
   {"$project":{"_id":0, "lugar":"$_id"}},
   {"$sort":{"lugar":1}}
 ]) </code></pre>
-
-En un esquema, se vería de la siguiente forma:
-
-<img src="imgs/esquema_grafo.png" alt="Esquema" style="width:680px; height:200px;">
 
 Por último, se eliminaron los atributos no necesarios para la base, o que harían redundante la estructura.
 
@@ -392,14 +393,36 @@ result3 = my_collection.aggregate(pipeline3)
 
 ### Neo4j
 
-El primer query, pero en Neo4j.
+El primer query en Neo4j busca todas las obras de Picasso, y en la interfaz, regresa un grafo.
 
-<pre> <code id="codeSnippet"> # Query 1 </code></pre>
+<pre> <code id="codeSnippet">consulta1 = """
+MATCH (o:Pintura)-[rel]->(e:Artista)
+WHERE e.nombre CONTAINS 'Pablo Picasso'
+RETURN o, rel, e;
+"""
+records1, summary1, keys1 = conexion_grafo_pinturas.consulta(consulta1)
 
-El segundo query en Neo4j.
+for record in records1:
+    print(record.data()) </code></pre>
 
-<pre> <code id="codeSnippet"> # Query 2 </code></pre>
+El segundo query en Neo4j regresa los tipos de pinturas que más aparecen en las obras.
 
-El tercer query pero en Neo4j.
+<pre> <code id="codeSnippet">consulta2 = """
+MATCH (e:Pintura) return e.tipo, count(*) as c order by c desc;
+"""
+records2, summary2, keys2 = conexion_grafo_pinturas.consulta(consulta2)
 
-<pre> <code id="codeSnippet"> # Query 3 </code></pre>
+for record in records2:
+    print(record.data())</code></pre>
+
+El último query de Neo4j es bastante especial. Usando <code>GDS</code> y <code>PageRank</code>, consigue a los artistas más relevantes. 
+
+> **¡Ojo!** Solo es ejecutable desde la interfaz de Neo4j.
+
+<pre> <code id="codeSnippet"># Ejecutar en la interfaz:
+
+CALL gds.graph.create('pinturasYArtistas', ['Artista', 'Pintura'], ['PINTADA_POR']) YIELD graphName AS graph, nodeProjection, nodeCount AS nodes, relationshipCount AS rels;
+
+# Luego, ejecturar:
+
+CALL gds.pageRank.stream('pinturasYArtistas') YIELD nodeId, score RETURN gds.util.asNode(nodeId).nombre AS nombre, score ORDER BY score DESC, nombre ASC</code></pre>
