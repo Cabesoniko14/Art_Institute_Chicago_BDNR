@@ -301,7 +301,7 @@ Teniendo ya los nodos, se crearon conexiones entre los nodos de la siguiente for
 
 En un esquema, se vería de la siguiente forma:
 
-<img src="imgs/esquema.png" alt="Esquema" style="width:680px; height:200px;">
+<img src="imgs/esquema_grafo.png" alt="Esquema" style="width:680px; height:200px;">
 
 Por último, se eliminaron los atributos no necesarios para la base, o que harían redundante la estructura.
 
