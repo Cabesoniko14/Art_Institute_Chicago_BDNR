@@ -319,7 +319,8 @@ Compartimos por aquí los tres queries que diseñamos para la base de datos (tan
 
 El primer query nos regresa los artistas que tienen más estilos.
 
-<pre> <code id="codeSnippet"> # Query 1 
+<pre> <code id="codeSnippet"> 
+# Query 1 
 pipeline1 = [
     {
         '$group': {
@@ -347,18 +348,53 @@ pipeline1 = [
     }
 ]
 
-# Query
-
 result1 = my_collection.aggregate(pipeline1)
 </code></pre>
 
-El segundo query trata de ____.
+El segundo query enlista todos los años de publicación de una obra agrupandolo por artista.
 
-<pre> <code id="codeSnippet"> # Query 2 </code></pre>
+<pre> <code id="codeSnippet"> 
+# Query 2 
+pipeline2 = [
+    {"$group": {"_id": "$artist_title", "fechas_display": {"$push": "$date_display"}}},
+    {"$project": {"_id": 0, "artista": "$_id", "fechas_display": 1}},
+    {"$sort": {"artista": 1}}
+]
 
-El tercer query trata de ____.
+result2 = my_collection.aggregate(pipeline2)
+</code></pre>
 
-<pre> <code id="codeSnippet"> # Query 3 </code></pre>
+El tercer ordena de menor a mayor, el promedio del ancho de las pinturas de cada artista.
+
+<pre> <code id="codeSnippet"> 
+# Query 3 
+pipeline3 = [
+    {
+        '$group': {
+            '_id': {
+                'artista': '$artist_title'
+            },
+            'promedio_tamaños': {
+                '$avg': '$thumbnail.width'
+            }
+        }
+    },
+    {
+        '$project': {
+            '_id': 0,
+            'artista': '$_id.artista',
+            'promedio_tamaño': '$promedio_tamaños'
+        }
+    },
+    {
+        '$sort': {
+            'promedio_tamaño': 1,
+        }
+    }
+]
+
+result3 = my_collection.aggregate(pipeline3)
+</code></pre>
 
 ### Neo4j
 
